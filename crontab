@@ -1,0 +1,1 @@
+* * * * * echo "crontab is running" >> /tmp/crontab.log
