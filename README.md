@@ -13,6 +13,7 @@ podman build . -f Containerfile -t https
 ```bash
 podman run \
   -d \
+  -p 8080:80 \
   --name https \
   https
 ```
