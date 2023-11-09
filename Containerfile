@@ -4,6 +4,7 @@ MAINTAINER CYOSP <cyosp@cyosp.com>
 RUN apt update \
     && apt install -y \
       --no-install-recommends \
+      certbot \
       cron \
       nginx \
       supervisor
