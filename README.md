@@ -14,6 +14,8 @@ podman build . -f Containerfile -t https
 podman run \
   -d \
   -p 8080:80 \
+  -e "DH_LENGTH=4096" \
+  -v $(pwd)/demo/volume/certs:/certs \
   --name https \
   https
 ```
