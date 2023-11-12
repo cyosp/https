@@ -15,6 +15,7 @@ podman run \
   -d \
   -p 8080:80 \
   -e "DH_LENGTH=4096" \
+  -e "EXAMPLE_FROM_HOST=ex.amp.le" \
   -v $(pwd)/demo/volume/certs:/certs \
   --name https \
   https
