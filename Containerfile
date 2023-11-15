@@ -6,6 +6,7 @@ RUN apt update \
       --no-install-recommends \
       certbot \
       cron \
+      gettext-base \
       nginx \
       supervisor
 
@@ -18,6 +19,9 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 # Setup config
 ADD setup-config.sh /usr/local/bin/setup-config.sh
 RUN chmod +x /usr/local/bin/setup-config.sh
+COPY domain-base.template /tmp
+COPY domain-path-http.template /tmp
+COPY domain-path.template /tmp
 
 # Crontab
 ADD crontab /etc/cron.d/renewal
