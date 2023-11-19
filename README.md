@@ -10,11 +10,15 @@ podman build . -f Containerfile -t https
 ```
 
 ### Run
+#### Dry run
 ```bash
 podman run \
   -d \
   -p 8080:80 \
   -e "DH_LENGTH=4096" \
+  -e "KEY_TYPE=rsa" \
+  -e "KEY_VALUE=4096" \
+  -e "DRY_RUN=true" \
   -e "EXAMPLE1_FROM_HOST=ex.amp.le" \
   -e "EXAMPLE1_AND_PATH=/path1" \
   -e "EXAMPLE1_TO=192.168.0.1" \
