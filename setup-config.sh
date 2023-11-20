@@ -49,7 +49,7 @@ do
     /usr/bin/cp $CERT_HOST_CERT_PEM_FILE_PATH $CERT_HOST_DIR/fullchain.pem
     log "[$domain] Success"
   else
-    log "[$domain] Self-signed certificate already exists"
+    log "[$domain] A certificate already exists"
   fi
 
   path="${host}_AND_PATH"
@@ -73,6 +73,9 @@ do
   /usr/bin/mkdir -p $DOMAIN_FOLDER
 
   PATH_UNDERSCORE=${path//\//_}
+  if [ -z "$PATH_UNDERSCORE" ]; then
+    PATH_UNDERSCORE="_"
+  fi
 
   basicAuthUserNameAndPassword="${host}_BASIC_AUTH_USERNAME_AND_PASSWORD"
   basicAuthUserNameAndPassword=${!basicAuthUserNameAndPassword}
