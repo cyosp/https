@@ -31,7 +31,7 @@ podman run \
   -e "EXAMPLE4_AND_PATH=/path4" \
   -e "EXAMPLE4_BASIC_AUTH_USERNAME_AND_PASSWORD=login:password" \
   -e "EXAMPLE4_TO=192.168.0.4" \
-  -v $(pwd)/demo/volume/certs:/etc/letsencrypt/live \
+  -v $(pwd)/demo/volume/certs:/etc/letsencrypt \
   -v $(pwd)/demo/volume/conf:/conf \
   --name https \
   https

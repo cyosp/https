@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 1.1.1 (2023-11-21)
+ * Change volume exposed to backup all Let's Encrypt configuration
+
 ##### 1.1.0 (2023-11-21)
  * Create self-signed certificate only if there is no certificate
 
