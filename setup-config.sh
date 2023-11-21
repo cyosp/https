@@ -28,11 +28,12 @@ do
   domain="${host}_FROM_HOST"
   domain=${!domain}
 
-  if [ ! -e $LETSENCRYPT_LIVE_FOLDER/$domain/cert.pem ]; then
+  CERT_HOST_DIR=$CERT_FOLDER/$domain
+  CERT_HOST_CERT_PEM_FILE_PATH=$CERT_HOST_DIR/cert.pem
+
+  if [[ ! -e $LETSENCRYPT_LIVE_FOLDER/$domain/cert.pem && ! -e $CERT_HOST_CERT_PEM_FILE_PATH ]]; then
     log "[$domain] Create self-signed certificate"
 
-    CERT_HOST_DIR=$CERT_FOLDER/$domain
-    CERT_HOST_CERT_PEM_FILE_PATH=$CERT_HOST_DIR/cert.pem
     CERT_HOST_CERT_KEY_FILE_PATH=$CERT_HOST_DIR/key.pem
     CERT_HOST_CERT_CSR_FILE_PATH=$CERT_HOST_DIR/cert.csr
 

@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 1.1.0 (2023-11-21)
+ * Create self-signed certificate only if there is no certificate
+
 ##### 1.0.2 (2023-11-21)
  * Save Let's Encrypt certificates
  * Change volumes exposed
