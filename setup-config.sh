@@ -6,6 +6,17 @@ function log() {
   echo "$(/usr/bin/date +%Y-%m-%dT%H:%M:%S) : $1"
 }
 
+function addCACertificateLinks() {
+  domain=$1
+  log "[$domain] Add CA certificate links"
+  LETSENCRYPT_DOMAIN_FOLDER_PATH=$LETSENCRYPT_LIVE_FOLDER/$domain
+  CERT_HOST_DIR=$CERT_FOLDER/$domain
+  /usr/bin/ln -sf $LETSENCRYPT_DOMAIN_FOLDER_PATH/cert.pem $CERT_HOST_DIR/cert.pem
+  /usr/bin/ln -sf $LETSENCRYPT_DOMAIN_FOLDER_PATH/privkey.pem $CERT_HOST_DIR/key.pem
+  /usr/bin/ln -sf $LETSENCRYPT_DOMAIN_FOLDER_PATH/fullchain.pem $CERT_HOST_DIR/fullchain.pem
+  log "[$domain] Success"
+}
+
 if [ -z "$DH_LENGTH" ]; then
   DH_LENGTH=2048
 fi
@@ -28,16 +39,17 @@ do
   domain="${host}_FROM_HOST"
   domain=${!domain}
 
+  LETSENCRYPT_CERT_PEM_FILE_PATH=$LETSENCRYPT_LIVE_FOLDER/$domain/cert.pem
   CERT_HOST_DIR=$CERT_FOLDER/$domain
+  /usr/bin/mkdir -p $CERT_HOST_DIR
   CERT_HOST_CERT_PEM_FILE_PATH=$CERT_HOST_DIR/cert.pem
 
-  if [[ ! -e $LETSENCRYPT_LIVE_FOLDER/$domain/cert.pem && ! -e $CERT_HOST_CERT_PEM_FILE_PATH ]]; then
+  if [[ ! -e $LETSENCRYPT_CERT_PEM_FILE_PATH && ! -e $CERT_HOST_CERT_PEM_FILE_PATH ]]; then
     log "[$domain] Create self-signed certificate"
 
     CERT_HOST_CERT_KEY_FILE_PATH=$CERT_HOST_DIR/key.pem
     CERT_HOST_CERT_CSR_FILE_PATH=$CERT_HOST_DIR/cert.csr
 
-    /usr/bin/mkdir -p $CERT_HOST_DIR
     /usr/bin/openssl genrsa -out $CERT_HOST_CERT_KEY_FILE_PATH 2048 2>&1
     /usr/bin/openssl req -new -key $CERT_HOST_CERT_KEY_FILE_PATH \
             -out CERT_HOST_CERT_CSR_FILE_PATH \
@@ -48,6 +60,8 @@ do
     /usr/bin/rm CERT_HOST_CERT_CSR_FILE_PATH
     /usr/bin/cp $CERT_HOST_CERT_PEM_FILE_PATH $CERT_HOST_DIR/fullchain.pem
     log "[$domain] Success"
+  elif [ -e $LETSENCRYPT_CERT_PEM_FILE_PATH ]; then
+    addCACertificateLinks $domain
   else
     log "[$domain] A certificate already exists"
   fi
@@ -153,8 +167,7 @@ do
             --register-unsafely-without-email \
             -d $domain;
     if [ -z "$DRY_RUN" ]; then
-      /usr/bin/ln -sf $LETSENCRYPT_LIVE_FOLDER/$domain/privkey.pem $CERT_FOLDER/$domain/key.pem
-      /usr/bin/ln -sf $LETSENCRYPT_LIVE_FOLDER/$domain/fullchain.pem $CERT_FOLDER/$domain/fullchain.pem
+      addCACertificateLinks $domain
     fi
     log "[$domain] Success"
   else

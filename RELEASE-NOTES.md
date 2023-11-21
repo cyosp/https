@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 1.1.2 (2023-11-21)
+ * Fix: Missing certificate links when CA certificate exist
+
 ##### 1.1.1 (2023-11-21)
  * Change volume exposed to backup all Let's Encrypt configuration
 
