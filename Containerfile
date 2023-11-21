@@ -32,6 +32,6 @@ RUN sed -i -e 's/^\(\[supervisord\]\)$/\1\nnodaemon=true/' /etc/supervisor/super
 COPY supervisor.conf /etc/supervisor/conf.d/https.conf
 
 EXPOSE 80
-VOLUME ["/certs", "/conf"]
+VOLUME ["/conf", "/etc/letsencrypt/live"]
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/supervisord.conf"]

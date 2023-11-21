@@ -2,11 +2,6 @@
 
 set -e
 
-CERT_FOLDER="/certs"
-CONF_FOLDER="/conf"
-
-ln -s $CONF_FOLDER/* /etc/nginx/conf.d/
-
 function log() {
   echo "$(/usr/bin/date +%Y-%m-%dT%H:%M:%S) : $1"
 }
@@ -15,7 +10,7 @@ if [ -z "$DH_LENGTH" ]; then
   DH_LENGTH=2048
 fi
 
-DH_FILE_PATH=$CERT_FOLDER/dhparam.pem
+DH_FILE_PATH=/conf/dhparam.pem
 if [ ! -e $DH_FILE_PATH ]; then
   log "Generate Diffie-Hellman file with length: $DH_LENGTH; it can takes several minutes"
   openssl dhparam -out $DH_FILE_PATH $DH_LENGTH
@@ -24,19 +19,23 @@ else
   log "Diffie-Hellman file already exists"
 fi
 
+LETSENCRYPT_LIVE_FOLDER="/etc/letsencrypt/live"
+CERT_FOLDER="/certs"
+NGINX_CONF_D_FOLDER="/etc/nginx/conf.d"
 HOSTS=$(/usr/bin/env | /usr/bin/grep _FROM_HOST | /usr/bin/cut -d "=" -f1 | /usr/bin/sed "s/_FROM_HOST$//")
 for host in $HOSTS
 do
   domain="${host}_FROM_HOST"
   domain=${!domain}
 
-  CERT_HOST_DIR=$CERT_FOLDER/$domain
-  CERT_HOST_CERT_PEM_FILE_PATH=$CERT_HOST_DIR/cert.pem
-  CERT_HOST_CERT_KEY_FILE_PATH=$CERT_HOST_DIR/key.pem
-  CERT_HOST_CERT_CSR_FILE_PATH=$CERT_HOST_DIR/cert.csr
-
-  if [ ! -e $CERT_HOST_CERT_PEM_FILE_PATH ]; then
+  if [ ! -e $LETSENCRYPT_LIVE_FOLDER/$domain/cert.pem ]; then
     log "[$domain] Create self-signed certificate"
+
+    CERT_HOST_DIR=$CERT_FOLDER/$domain
+    CERT_HOST_CERT_PEM_FILE_PATH=$CERT_HOST_DIR/cert.pem
+    CERT_HOST_CERT_KEY_FILE_PATH=$CERT_HOST_DIR/key.pem
+    CERT_HOST_CERT_CSR_FILE_PATH=$CERT_HOST_DIR/cert.csr
+
     /usr/bin/mkdir -p $CERT_HOST_DIR
     /usr/bin/openssl genrsa -out $CERT_HOST_CERT_KEY_FILE_PATH 2048 2>&1
     /usr/bin/openssl req -new -key $CERT_HOST_CERT_KEY_FILE_PATH \
@@ -69,7 +68,7 @@ do
   fi
 
   DOMAIN_LOWER_CASE=$(echo $domain | /usr/bin/tr '[:upper:]' '[:lower:]')
-  DOMAIN_FOLDER=$CONF_FOLDER/$DOMAIN_LOWER_CASE
+  DOMAIN_FOLDER=$NGINX_CONF_D_FOLDER/$DOMAIN_LOWER_CASE
   /usr/bin/mkdir -p $DOMAIN_FOLDER
 
   PATH_UNDERSCORE=${path//\//_}
@@ -89,7 +88,7 @@ do
 
   export DOMAIN=$domain
   export PATH=$path
-  /usr/bin/envsubst '$DOMAIN' < /tmp/domain-base.template > "$CONF_FOLDER/$DOMAIN_LOWER_CASE.conf"
+  /usr/bin/envsubst '$DOMAIN' < /tmp/domain-base.template > "$NGINX_CONF_D_FOLDER/$DOMAIN_LOWER_CASE.conf"
   if [ -n "$path" ]; then
       /usr/bin/envsubst '$PATH' < /tmp/domain-path-http.template > "$DOMAIN_FOLDER/$PATH_UNDERSCORE-http_redirect.conf"
   fi
@@ -153,8 +152,8 @@ do
             --register-unsafely-without-email \
             -d $domain;
     if [ -z "$DRY_RUN" ]; then
-      /usr/bin/ln -sf /etc/letsencrypt/live/$domain/privkey.pem /certs/$domain/key.pem
-      /usr/bin/ln -sf /etc/letsencrypt/live/$domain/fullchain.pem /certs/$domain/fullchain.pem
+      /usr/bin/ln -sf $LETSENCRYPT_LIVE_FOLDER/$domain/privkey.pem $CERT_FOLDER/$domain/key.pem
+      /usr/bin/ln -sf $LETSENCRYPT_LIVE_FOLDER/$domain/fullchain.pem $CERT_FOLDER/$domain/fullchain.pem
     fi
     log "[$domain] Success"
   else
