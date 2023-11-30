@@ -1,0 +1,7 @@
+/var/log/https/certbot-renew.log {
+	daily
+	rotate 120
+	nocompress
+	missingok
+	notifempty
+}

@@ -7,6 +7,7 @@ RUN apt update \
       certbot \
       cron \
       gettext-base \
+      logrotate \
       nginx \
       supervisor
 
@@ -24,8 +25,11 @@ COPY domain-path-http.template /tmp
 COPY domain-path.template /tmp
 
 # Crontab
-ADD crontab /etc/cron.d/renewal
-RUN crontab /etc/cron.d/renewal
+ADD crontab /etc/cron.d/https
+RUN crontab /etc/cron.d/https
+
+# Logrotate
+ADD logrotate-certbot-renew /etc/logrotate.d/certbot-renew
 
 # Supervisor
 RUN sed -i -e 's/^\(\[supervisord\]\)$/\1\nnodaemon=true/' /etc/supervisor/supervisord.conf

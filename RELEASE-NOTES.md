@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 1.2.0 (2023-11-30)
+ * Add CA certificate renewal
+
 ##### 1.1.2 (2023-11-21)
  * Fix: Missing certificate links when CA certificate exist
 
