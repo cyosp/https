@@ -29,6 +29,7 @@ ADD crontab /etc/cron.d/https
 RUN crontab /etc/cron.d/https
 
 # Logrotate
+RUN mkdir -p /var/log/https
 ADD logrotate-certbot-renew /etc/logrotate.d/certbot-renew
 
 # Supervisor

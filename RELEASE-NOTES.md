@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 1.2.1 (2023-12-01)
+ * Fix: Missing log directory
+
 ##### 1.2.0 (2023-11-30)
  * Add CA certificate renewal
 
