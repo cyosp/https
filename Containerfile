@@ -30,7 +30,7 @@ RUN crontab /etc/cron.d/https
 
 # Logrotate
 RUN mkdir -p /var/log/https
-ADD logrotate-certbot-renew /etc/logrotate.d/certbot-renew
+ADD logrotate/* /etc/logrotate.d
 
 # Supervisor
 RUN sed -i -e 's/^\(\[supervisord\]\)$/\1\nnodaemon=true/' /etc/supervisor/supervisord.conf

@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 1.3.0 (2023-12-01)
+ * Rotate CA renewal log file
+
 ##### 1.2.1 (2023-12-01)
  * Fix: Missing log directory
 
