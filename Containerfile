@@ -12,7 +12,7 @@ RUN apt update \
       supervisor
 
 # Nginx
-RUN rm -rf /etc/nginx/sites-enabled/default
+RUN rm -rf /etc/nginx/sites-enabled/default /usr/share/nginx/html/index.html
 ADD nginx.conf /etc/nginx/sites-enabled/https.conf
 RUN sed -i "s/user www-data;/user root;/" /etc/nginx/nginx.conf
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
