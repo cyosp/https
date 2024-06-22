@@ -1,5 +1,7 @@
 47 4 * * * /usr/bin/certbot renew 2>&1 > /var/log/https/certbot-renew.log
+0 5 * * * /usr/sbin/nginx -s reload 2>&1 > /var/log/https/nginx-reload.log
 
 0 4 * * * /usr/bin/logrotate /etc/logrotate.d/letsencrypt
 1 4 * * * /usr/bin/logrotate /etc/logrotate.d/certbot-renew
+2 4 * * * /usr/bin/logrotate /etc/logrotate.d/nginx-reload
 

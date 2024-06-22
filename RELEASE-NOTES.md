@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 1.3.2 (2024-06-22)
+ * Fix: Renewed certificates not available over HTTPS
+
 ##### 1.3.1 (2024-02-22)
  * Remove default web page
 

@@ -1,0 +1,7 @@
+/var/log/https/nginx-reload.log {
+	daily
+	rotate 120
+	nocompress
+	missingok
+	notifempty
+}
