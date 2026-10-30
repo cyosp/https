@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 1.4.0 (2026-10-30)
+ * Build for linux/arm64/v8
+
 ##### 1.3.2 (2024-06-22)
  * Fix: Renewed certificates not available over HTTPS
 
