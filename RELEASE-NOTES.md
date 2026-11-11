@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 1.5.0 (2026-11-11)
+ * Reject requests which don't match the configured domain
+
 ##### 1.4.0 (2026-10-30)
  * Build for linux/arm64/v8
 
