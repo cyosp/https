@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 1.6.0 (2026-11-18)
+ * Do not use certificate to reject https requests which don't match the configured domain
+
 ##### 1.5.0 (2026-11-11)
  * Reject requests which don't match the configured domain
 
